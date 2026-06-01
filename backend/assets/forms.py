@@ -1,5 +1,6 @@
 from django import forms
 from .models import Computer
+from .models import AssetAssignment
 
 
 class ComputerForm(forms.ModelForm):
@@ -12,4 +13,15 @@ class ComputerForm(forms.ModelForm):
             'serial_number',
             'purchase_date',
             'status'
+        ]
+
+
+class AssetAssignmentForm(forms.ModelForm):
+    class Meta:
+        model = AssetAssignment
+        fields = [
+            'employee',
+            'computer',
+            'vehicle',
+            'projector'
         ]
