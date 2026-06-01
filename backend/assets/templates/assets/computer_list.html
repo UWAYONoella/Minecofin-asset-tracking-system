@@ -1,0 +1,14 @@
+<h2>Computer List</h2>
+
+<a href="/computers/add/">Add Computer</a>
+
+<ul>
+    {% for c in computers %}
+        <li>
+            {{ c.asset_tag }} - {{ c.brand }}
+
+            <a href="/computers/edit/{{ c.id }}/">Edit</a>
+            <a href="/computers/delete/{{ c.id }}/">Delete</a>
+        </li>
+    {% endfor %}
+</ul>
