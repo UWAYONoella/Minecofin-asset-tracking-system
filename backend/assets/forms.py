@@ -40,4 +40,9 @@ class EmployeeForm(forms.ModelForm):
 class VehicleForm(forms.ModelForm):
     class Meta:
         model = Vehicle
-        fields = ['asset_tag', 'brand', 'model']
+        fields = [
+            'plate_number',
+            'brand',
+            'model',
+            'purchase_date',
+            'status']

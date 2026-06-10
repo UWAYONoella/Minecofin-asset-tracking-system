@@ -1,6 +1,5 @@
-from django.shortcuts import render
-from .models import Computer, Vehicle, Projector, Employee
 from django.shortcuts import render, redirect, get_object_or_404
+from .models import Computer, Vehicle, Projector, Employee
 from .forms import ComputerForm
 from .models import AssetAssignment
 from .forms import AssetAssignmentForm
@@ -142,3 +141,40 @@ def delete_employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     employee.delete()
     return redirect('employee_list')
+
+
+def add_vehicle(request):
+    if request.method == "POST":
+        form = VehicleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vehicle_list')
+    else:
+        form = VehicleForm()
+
+    return render(request, 'assets/add_vehicle.html', {'form': form})
+
+
+def vehicle_list(request):
+    vehicles = Vehicle.objects.all()
+    return render(request, 'assets/vehicle_list.html', {'vehicles': vehicles})
+
+
+def edit_vehicle(request, pk):
+    vehicle = get_object_or_404(Vehicle, pk=pk)
+
+    if request.method == "POST":
+        form = VehicleForm(request.POST, instance=vehicle)
+        if form.is_valid():
+            form.save()
+            return redirect('vehicle_list')
+    else:
+        form = VehicleForm(instance=vehicle)
+
+    return render(request, 'assets/edit_vehicle.html', {'form': form})
+
+
+def delete_vehicle(request, pk):
+    vehicle = get_object_or_404(Vehicle, pk=pk)
+    vehicle.delete()
+    return redirect('vehicle_list')
