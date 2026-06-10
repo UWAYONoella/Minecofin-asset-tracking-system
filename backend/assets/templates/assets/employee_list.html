@@ -1,0 +1,14 @@
+<h2>Employee List</h2>
+
+<a href="/employees/add/">Add Employee</a>
+
+<ul>
+    {% for e in employees %}
+        <li>
+            {{ e.full_name }} - {{ e.email }}
+
+            <a href="/employees/edit/{{ e.id }}/">Edit</a>
+            <a href="/employees/delete/{{ e.id }}/">Delete</a>
+        </li>
+    {% endfor %}
+</ul>

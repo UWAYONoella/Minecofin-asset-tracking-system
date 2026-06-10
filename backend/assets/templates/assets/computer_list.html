@@ -1,14 +1,36 @@
-<h2>Computer List</h2>
+{% extends 'assets/base.html' %}
 
-<a href="/computers/add/">Add Computer</a>
+{% block content %}
 
-<ul>
-    {% for c in computers %}
-        <li>
-            {{ c.asset_tag }} - {{ c.brand }}
+<h2>Computers</h2>
 
-            <a href="/computers/edit/{{ c.id }}/">Edit</a>
-            <a href="/computers/delete/{{ c.id }}/">Delete</a>
-        </li>
-    {% endfor %}
-</ul>
+<a class="btn btn-primary mb-3" href="/computers/add/">Add Computer</a>
+
+<table class="table table-striped">
+
+<tr>
+    <th>Tag</th>
+    <th>Brand</th>
+    <th>Model</th>
+    <th>Status</th>
+    <th>Actions</th>
+</tr>
+
+{% for c in computers %}
+<tr>
+    <td>{{ c.asset_tag }}</td>
+    <td>{{ c.brand }}</td>
+    <td>{{ c.model }}</td>
+    <td>
+        <span class="badge bg-info">{{ c.status }}</span>
+    </td>
+    <td>
+        <a class="btn btn-warning btn-sm" href="/computers/edit/{{ c.id }}/">Edit</a>
+        <a class="btn btn-danger btn-sm" href="/computers/delete/{{ c.id }}/">Delete</a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

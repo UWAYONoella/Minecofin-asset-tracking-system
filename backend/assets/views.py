@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from .models import Computer, Vehicle, Projector, Employee
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Computer
 from .forms import ComputerForm
 from .models import AssetAssignment
 from .forms import AssetAssignmentForm
+from .models import Employee
+from .forms import EmployeeForm
+from .forms import VehicleForm
 
 
 def dashboard(request):
@@ -37,6 +39,13 @@ def computer_list(request):
 
 def edit_computer(request, pk):
     computer = get_object_or_404(Computer, pk=pk)
+
+# 🚫 BLOCK EDIT IF ASSIGNED
+    if computer.status == "Assigned":
+        return render(request, 'assets/error.html', {
+            'message': 'This computer is assigned and cannot be edited.'
+        })
+    
 
     if request.method == "POST":
         form = ComputerForm(request.POST, instance=computer)
@@ -71,14 +80,65 @@ def add_assignment(request):
         form = AssetAssignmentForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            assignment = form.save()
+
+            # DEBUG (optional)
+            print("Computer:", assignment.computer)
+
+            if assignment.computer_id:
+                Computer.objects.filter(id=assignment.computer_id).update(
+                    status="Assigned"
+                )
+
+            if assignment.vehicle_id:
+                Vehicle.objects.filter(id=assignment.vehicle_id).update(
+                    status="Assigned"
+                )
+
+            if assignment.projector_id:
+                Projector.objects.filter(id=assignment.projector_id).update(
+                    status="Assigned"
+                )
+
             return redirect('assignment_list')
 
     else:
         form = AssetAssignmentForm()
 
-    return render(
-        request,
-        'assets/add_assignment.html',
-        {'form': form}
-    )
+    return render(request, 'assets/add_assignment.html', {'form': form})
+
+def add_employee(request):
+    if request.method == "POST":
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_list')
+    else:
+        form = EmployeeForm()
+
+    return render(request, 'assets/add_employee.html', {'form': form})
+
+
+def employee_list(request):
+    employees = Employee.objects.all()
+    return render(request, 'assets/employee_list.html', {'employees': employees})
+
+
+def edit_employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+
+    if request.method == "POST":
+        form = EmployeeForm(request.POST, instance=employee)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_list')
+    else:
+        form = EmployeeForm(instance=employee)
+
+    return render(request, 'assets/edit_employee.html', {'form': form})
+
+
+def delete_employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    employee.delete()
+    return redirect('employee_list')
