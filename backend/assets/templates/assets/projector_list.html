@@ -1,0 +1,44 @@
+{% extends 'assets/base.html' %}
+
+{% block content %}
+
+<h2>Projectors</h2>
+
+<a class="btn btn-primary mb-3"
+   href="/projectors/add/">
+   Add Projector
+</a>
+
+<table class="table table-bordered">
+
+<tr>
+    <th>Asset Tag</th>
+    <th>Brand</th>
+    <th>Serial Number</th>
+    <th>Status</th>
+    <th>Actions</th>
+</tr>
+
+{% for p in projectors %}
+<tr>
+    <td>{{ p.asset_tag }}</td>
+    <td>{{ p.brand }}</td>
+    <td>{{ p.serial_number }}</td>
+    <td>{{ p.status }}</td>
+    <td>
+        <a class="btn btn-warning btn-sm"
+           href="/projectors/edit/{{ p.id }}/">
+           Edit
+        </a>
+
+        <a class="btn btn-danger btn-sm"
+           href="/projectors/delete/{{ p.id }}/">
+           Delete
+        </a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

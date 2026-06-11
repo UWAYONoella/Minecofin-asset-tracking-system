@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import add_assignment, assignment_list, dashboard, add_computer, computer_list, edit_computer, delete_computer, employee_list, add_employee, edit_employee, delete_employee, add_vehicle, vehicle_list, edit_vehicle, delete_vehicle
+from .views import add_assignment, assignment_list, dashboard, add_computer, computer_list, delete_projector, edit_computer, delete_computer, employee_list, add_employee, edit_employee, delete_employee, add_vehicle, vehicle_list, edit_vehicle, delete_vehicle, projector_list, add_projector, edit_projector
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
@@ -18,5 +18,9 @@ path('vehicles/', vehicle_list, name='vehicle_list'),
 path('vehicles/add/', add_vehicle, name='add_vehicle'),
 path('vehicles/edit/<int:pk>/', edit_vehicle, name='edit_vehicle'),
 path('vehicles/delete/<int:pk>/', delete_vehicle, name='delete_vehicle'),
+path('projectors/', projector_list, name='projector_list'),
+path('projectors/add/', add_projector, name='add_projector'),
+path('projectors/edit/<int:pk>/', edit_projector, name='edit_projector'),
+path('projectors/delete/<int:pk>/', delete_projector, name='delete_projector'),
 ]
 

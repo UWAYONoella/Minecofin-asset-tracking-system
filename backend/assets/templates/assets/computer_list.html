@@ -3,6 +3,75 @@
 {% block content %}
 
 <h2>Computers</h2>
+<form method="GET" class="mb-3">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                class="form-control"
+                placeholder="Search by tag, brand or model">
+        </div>
+
+        <div class="col-md-3">
+            <select name="status" class="form-control">
+
+                <option value="">All Status</option>
+
+                <option value="Available"
+                    {% if status == "Available" %}selected{% endif %}>
+                    Available
+                </option>
+
+                <option value="Assigned"
+                    {% if status == "Assigned" %}selected{% endif %}>
+                    Assigned
+                </option>
+
+                <option value="Maintenance"
+                    {% if status == "Maintenance" %}selected{% endif %}>
+                    Maintenance
+                </option>
+
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">
+                Search / Filter
+            </button>
+        </div>
+
+        <div class="col-md-2">
+            <a href="/computers/" class="btn btn-secondary">
+                Reset
+            </a>
+        </div>
+
+    </div>
+
+</form>
+<select name="status" class="form-control">
+
+    <option value="">All Status</option>
+
+    <option value="Available">
+        Available
+    </option>
+
+    <option value="Assigned">
+        Assigned
+    </option>
+
+    <option value="Maintenance">
+        Maintenance
+    </option>
+
+</select>
+<br><br> 
 
 <a class="btn btn-primary mb-3" href="/computers/add/">Add Computer</a>
 

@@ -6,6 +6,8 @@ from .forms import AssetAssignmentForm
 from .models import Employee
 from .forms import EmployeeForm
 from .forms import VehicleForm
+from .forms import ProjectorForm
+from django.db.models import Q
 
 
 def dashboard(request):
@@ -32,8 +34,32 @@ def add_computer(request):
 
 
 def computer_list(request):
+    search = request.GET.get('search')
+    status = request.GET.get('status')
+    # start with all computers
     computers = Computer.objects.all()
-    return render(request, 'assets/computer_list.html', {'computers': computers})
+
+    # filter by status if provided
+    if status:
+        computers = computers.filter(status=status)
+
+    # filter by search term if provided
+    if search:
+        computers = computers.filter(
+            Q(asset_tag__icontains=search) |
+            Q(brand__icontains=search) |
+            Q(model__icontains=search)
+        )
+
+    return render(
+        request,
+        'assets/computer_list.html',
+        {
+            'computers': computers,
+            'search': search,
+            'status': status
+        }
+    )
 
 
 def edit_computer(request, pk):
@@ -178,3 +204,40 @@ def delete_vehicle(request, pk):
     vehicle = get_object_or_404(Vehicle, pk=pk)
     vehicle.delete()
     return redirect('vehicle_list')
+
+
+def add_projector(request):
+    if request.method == "POST":
+        form = ProjectorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('projector_list')
+    else:
+        form = ProjectorForm()
+
+    return render(request, 'assets/add_projector.html', {'form': form})
+
+
+def projector_list(request):
+    projectors = Projector.objects.all()
+    return render(request, 'assets/projector_list.html', {'projectors': projectors})
+
+
+def edit_projector(request, pk):
+    projector = get_object_or_404(Projector, pk=pk)
+
+    if request.method == "POST":
+        form = ProjectorForm(request.POST, instance=projector)
+        if form.is_valid():
+            form.save()
+            return redirect('projector_list')
+    else:
+        form = ProjectorForm(instance=projector)
+
+    return render(request, 'assets/edit_projector.html', {'form': form})
+
+
+def delete_projector(request, pk):
+    projector = get_object_or_404(Projector, pk=pk)
+    projector.delete()
+    return redirect('projector_list')
