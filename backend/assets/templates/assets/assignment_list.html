@@ -1,32 +1,62 @@
+{% extends 'assets/base.html' %}
+
+{% block content %}
+
 <h2>Asset Assignments</h2>
 
-<a href="/assignments/add/">
+<a href="/assignments/add/" class="btn btn-primary mb-3">
     Assign Asset
 </a>
 
-<hr>
+<table class="table table-bordered">
 
-{% for a in assignments %}
+    <tr>
+        <th>Employee</th>
+        <th>Computer</th>
+        <th>Vehicle</th>
+        <th>Projector</th>
+        <th>Actions</th>
+    </tr>
 
-<p>
-Employee: {{ a.employee }}
+    {% for a in assignments %}
 
-<br>
+    <tr>
+        <td>{{ a.employee }}</td>
 
-Computer:
-{{ a.computer }}
+        <td>
+            {% if a.computer %}
+                {{ a.computer }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
 
-<br>
+        <td>
+            {% if a.vehicle %}
+                {{ a.vehicle }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
 
-Vehicle:
-{{ a.vehicle }}
+        <td>
+            {% if a.projector %}
+                {{ a.projector }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
 
-<br>
+        <td>
+            <a href="/assignments/return/{{ a.id }}/"
+               class="btn btn-success btn-sm">
+               Return Asset
+            </a>
+        </td>
+    </tr>
 
-Projector:
-{{ a.projector }}
-</p>
+    {% endfor %}
 
-<hr>
+</table>
 
-{% endfor %}
+{% endblock %}

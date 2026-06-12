@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import add_assignment, assignment_list, dashboard, add_computer, computer_list, delete_projector, edit_computer, delete_computer, employee_list, add_employee, edit_employee, delete_employee, add_vehicle, vehicle_list, edit_vehicle, delete_vehicle, projector_list, add_projector, edit_projector
+from .views import return_assignment
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
@@ -22,5 +23,10 @@ path('projectors/', projector_list, name='projector_list'),
 path('projectors/add/', add_projector, name='add_projector'),
 path('projectors/edit/<int:pk>/', edit_projector, name='edit_projector'),
 path('projectors/delete/<int:pk>/', delete_projector, name='delete_projector'),
+path(
+    'assignments/return/<int:pk>/',
+    return_assignment,
+    name='return_assignment'
+),
 ]
 

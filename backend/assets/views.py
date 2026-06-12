@@ -241,3 +241,27 @@ def delete_projector(request, pk):
     projector = get_object_or_404(Projector, pk=pk)
     projector.delete()
     return redirect('projector_list')
+
+
+def return_assignment(request, pk):
+
+    assignment = get_object_or_404(
+        AssetAssignment,
+        pk=pk
+    )
+
+    if assignment.computer:
+        assignment.computer.status = "Available"
+        assignment.computer.save()
+
+    if assignment.vehicle:
+        assignment.vehicle.status = "Available"
+        assignment.vehicle.save()
+
+    if assignment.projector:
+        assignment.projector.status = "Available"
+        assignment.projector.save()
+
+    assignment.delete()
+
+    return redirect('assignment_list')
